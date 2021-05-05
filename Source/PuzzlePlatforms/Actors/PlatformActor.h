@@ -7,6 +7,8 @@
 #include "PlatformActor.generated.h"
 
 class USphereComponent;
+class APressurePlateActor;
+
 UCLASS()
 class PUZZLEPLATFORMS_API APlatformActor : public AActor
 {
@@ -18,6 +20,8 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void Trigger(const bool& Value);
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,7 +43,7 @@ private:
 	FVector InitialLocation;
 	FVector TargetLocation;
 	bool bMovingBack = false;
-
-	
+	bool bMoving = true;
+	int32 NumberOfActivePressurePlates = 0;
 	
 };

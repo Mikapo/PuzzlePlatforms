@@ -35,7 +35,11 @@ APlatformActor::APlatformActor()
 void APlatformActor::BeginPlay()
 {
 
-
+	UGameInstance* GameInstance = Cast<UGameInstance>(GetWorld()->GetGameInstance());
+	if (GameInstance)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Current Game Instance: %s"), *GameInstance->GetName())
+	}
 
 
 	Super::BeginPlay();
@@ -53,7 +57,18 @@ void APlatformActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (HasAuthority()) Move();
+	if (HasAuthority() && bMoving) Move();
+}
+
+void APlatformActor::Trigger(const bool& Value)
+{
+	if (Value) NumberOfActivePressurePlates++;
+	else NumberOfActivePressurePlates--;
+
+	if (NumberOfActivePressurePlates < 0)NumberOfActivePressurePlates = 0;
+
+	if (NumberOfActivePressurePlates > 0) bMoving = true;
+	else bMoving = false;
 }
 
 void APlatformActor::Move()
