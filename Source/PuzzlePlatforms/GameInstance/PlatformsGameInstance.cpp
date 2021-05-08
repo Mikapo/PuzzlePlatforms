@@ -5,23 +5,24 @@
 
 UPlatformsGameInstance::UPlatformsGameInstance(const FObjectInitializer& ObjectIn)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Constructor Test"))
+	
 }
 
 void UPlatformsGameInstance::Init()
 {
 	Super::Init();
 
-	UE_LOG(LogTemp, Warning, TEXT("Init Test"))
+	
 }
 
 void UPlatformsGameInstance::Host()
 {
-	if (!GEngine) return;
-	GEngine->AddOnScreenDebugMessage(0, 2.0f, FColor::Green, TEXT("Hosting"));
+	GetWorld()->ServerTravel(TEXT("/Game/MyStuff/Levels/MultiPlayer?listen"));
 }
 
 void UPlatformsGameInstance::Join(const FString& IP)
 {
 	GEngine->AddOnScreenDebugMessage(0, 2.0f, FColor::Green, FString::Printf(TEXT("Joining on server: %s"), *IP));
+
+	GetWorld()->GetFirstPlayerController()->ClientTravel(IP, ETravelType::TRAVEL_Absolute);
 }
